@@ -63,7 +63,7 @@ flowchart TD
         Cron_Fri["🕒 Viernes: Update Fixture"]
         Cron_Wed["🕒 Miércoles: Re-Training"]
         
-        Scraper["🕷️ scraper.py<br/>(Cloudscraper)"]
+        Scraper["🕷️ scraper_fixtures.py<br/>(Nodriver / Request)"]
         Trainer["🧠 train_model.py<br/>(Scikit-Learn)"]
         
         Cron_Fri -->|Trigger| Scraper

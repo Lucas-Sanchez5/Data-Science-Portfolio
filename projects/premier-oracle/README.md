@@ -53,7 +53,7 @@ Visualización de la "Era Moderna" de la Premier League a través de nuestro mot
 
 ### 3. Production Snapshot
 Evidencia de ejecución del pipeline de entrenamiento con validación Time-Series (Jornada 24).
-![Audit](./reports/feature_importance.png)
+![Audit](./reports/production_snapshot.png)
 <sub>*Validación Offline: 57.19% Accuracy en clasificación direccional.*</sub>
 
 

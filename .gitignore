@@ -14,6 +14,7 @@ dist/
 
 # Datos y Modelos
 *.csv
+*.xlsx
 *.parquet
 *.pkl
 *.joblib

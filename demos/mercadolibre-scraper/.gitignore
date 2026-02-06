@@ -1,0 +1,14 @@
+# Archivos generados
+*.csv
+*.xlsx
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+venv/
+
+# IDEs
+.vscode/
+.idea/

@@ -1,69 +1,70 @@
-# ⚽ Premier Oracle: Ecosistema MLOps para Predicción Deportiva
+# ⚽ Premier Oracle: MLOps Ecosystem for Sports Prediction
 
-Este proyecto es un sistema *end-to-end* que utiliza Machine Learning para predecir resultados de la Premier League. A diferencia de modelos básicos, este ecosistema implementa principios de **MLOps** para garantizar predicciones honestas, escalables y libres de sesgos temporales.
+An end-to-end machine learning system engineered to predict Premier League match outcomes. Moving away from static scripts, this ecosystem implements robust **MLOps** principles to deliver reliable, scalable predictions free from temporal leakage.
 
-## 🚀 Desafíos Técnicos Superados
+## 🚀 Technical Challenges Overcome
 
-### 1. Ingesta y Calidad de Datos (Data Engineering)
-- **Scraping de Alto Nivel:** Superación de bloqueos en sitios como FBRef y Understat mediante inyección de JavaScript con `Nodriver`.
-- **Normalización de +25 Temporadas:** Fusión de datos históricos con datos modernos, asegurando la consistencia de nombres de equipos y métricas a lo largo de décadas.
-- **Almacenamiento Eficiente:** Implementación de archivos **Parquet** para reducir los tiempos de carga en un 80% frente a CSV tradicionales.
+### 1. Data Engineering & High-Efficiency Ingestion
+* **Advanced Web Scraping:** Overcame strict anti-bot mechanisms on football analytics platforms (e.g., FBRef, Understat) using JavaScript injection with `Nodriver`.
+* **25+ Season Normalization:** Merged historical datasets with modern metrics, ensuring team naming consistency and entity mapping across decades.
+* **Optimized Data Storage:** Migrated to **Parquet** format, reducing dataset load times by ~80% compared to traditional CSV files.
 
-### 2. Validación Causal (Time Series Split)
-Para evitar el **Data Leakage** (fuga de datos del futuro), reemplacé la validación aleatoria tradicional por un **Time Series Split**. Esto obliga al modelo a aprender exclusivamente del pasado para predecir el futuro, simulando un entorno de producción real.
+### 2. Causal Validation (Time Series Split)
+To eliminate **Data Leakage** (preventing future information from contaminating past features), traditional random cross-validation was replaced with a strictly ordered **Time Series Split**. This forces the model to learn exclusively from historical context, mirroring real-world inference environments.
 
-### 3. Ingeniería de Señal vs. Ruido
-- **ELO Ratings:** Implementación de un sistema de fuerza relativa dinámica para capturar la jerarquía de los equipos.
-- **EWMA (Exponential Weighted Moving Average):** Suavizado de métricas de eficiencia ofensiva para priorizar la "forma actual" del equipo sobre datos históricos obsoletos.
+### 3. Signal vs. Noise Feature Engineering
+* **Dynamic ELO Ratings:** Implemented a relative team-strength metric to capture squad hierarchy over time.
+* **EWMA (Exponential Weighted Moving Average):** Applied dynamic smoothing to attacking and defensive efficiency metrics, prioritizing current form over stale historical averages.
 
-### 4. Arquitectura de Preprocesamiento Blindada
-Uso de `sklearn.base.clone` para aislar el entrenamiento del clasificador y los regresores. Se implementó un **Master Preprocessor** ajustado con el dataset global para asegurar la consistencia matemática en la inferencia.
+### 4. Hardened Preprocessing Architecture
+Utilized `sklearn.base.clone` to strictly isolate classifier training from regressor logic. Implemented a **Master Preprocessor** pipeline fitted against the global dataset to guarantee mathematical consistency during inference.
 
-## 🛠️ Stack Tecnológico
-- **Core:** Python (Pandas, NumPy)
-- **ML:** LightGBM, Scikit-Learn (HistGradientBoosting)
-- **Ingestión:** Scraping modular con `Nodriver` e inyección de JS.
-- **Delivery:** Bot de Telegram privado desplegado en **Render**.
+## 🛠️ Tech Stack
+* **Core:** Python (Pandas, NumPy)
+* **ML & Modeling:** LightGBM, Scikit-Learn
+* **Data Ingestion:** Modular Web Scraping (`Nodriver`, JS Injection)
+* **Delivery & Infra:** Flask API, GitHub Actions (CI/CD), Telegram Bot API, Render Cloud Platform
 
-## 📊 Métricas de Rendimiento (Validadas)
-- **Accuracy (Clasificación):** 57.19%
-- **MAE Goles Visitante:** 0.87
-- **MAE Goles Local:** 0.92
+## 📊 Performance Metrics (Validated)
+* **Classification Accuracy:** 57.19%
+* **Away Goals MAE:** 0.87
+* **Home Goals MAE:** 0.92
 
-## 📂 Estructura del Código
-- `src/`: Lógica modular de ingeniería de features y predicción.
-- `notebooks/`: Análisis exploratorio de datos (EDA) y experimentación.
-- `reports/`: Evidencia visual del rendimiento, análisis de features y capturas del producto final.
+## 📂 Code Structure
+* `src/`: Modular logic for feature engineering, training pipelines, and prediction.
+* `notebooks/`: Exploratory Data Analysis (EDA) and experimental feature engineering.
+* `reports/`: Performance visual audits, feature importance matrices, and product execution snapshots.
 
-## 🚀 Producto Final
-Las predicciones se entregan a través de un **Bot de Telegram** privado, permitiendo consultas manuales o visualización de la cartelera semanal de la Premier League con un solo botón.
+## 🚀 Production Deployment
+Predictions are served via a private **Telegram Bot** connected to a **Flask API**. Users can query individual match forecasts or request weekly fixture lists with a single command.
 
 ## 🖼️ Visual Intelligence & Audit
 
 ### 1. Model Logic & Interpretability
-Análisis de qué variables impulsan las decisiones del modelo (LightGBM Gain) y cómo se correlacionan con la realidad.
+Analysis of feature drivers behind model decisions (LightGBM Gain) and their correlation with real-world target variables.
 | Top Predictors | Feature Correlation |
 | :---: | :---: |
-| ![Features](./reports/feature_importance.png)<br><sub>*Eficiencia de tiro y ELO son los factores dominantes.*</sub> | ![Correlation](./reports/correlation_matrix.png)<br><sub>*Elo_Diff muestra alta correlación con los Goles Reales.*</sub> |
+| ![Features](./reports/feature_importance.png)<br><sub>*Shooting efficiency and Dynamic ELO are dominant factors.*</sub> | ![Correlation](./reports/correlation_matrix.png)<br><sub>*Elo_Diff shows strong linear correlation with Actual Goals.*</sub> |
 
-### 2. Market Insights (Storytelling)
-Visualización de la "Era Moderna" de la Premier League a través de nuestro motor de ELO Rating suavizado.
+### 2. Market Insights
+Visualization of the Premier League's modern era dynamics filtered through the EWMA-smoothed ELO rating engine.
 ![ELO Evolution](./reports/elo_evolution_smooth.png)
-<sub>*Análisis de tendencias de dominancia (2016-Presente). Note la consistencia del Man City vs. la volatilidad del Chelsea.*</sub>
+<sub>*Dominance trend analysis (2016–Present). Highlights Manchester City's sustained consistency vs. Chelsea's volatility.*</sub>
 
 ### 3. Production Snapshot
-Evidencia de ejecución del pipeline de entrenamiento con validación Time-Series (Jornada 24).
+Audit snapshot of the offline training pipeline using time-series cross-validation (Gameweek 24).
 ![Audit](./reports/production_snapshot.png)
-<sub>*Validación Offline: 57.19% Accuracy en clasificación direccional.*</sub>
+<sub>*Offline Validation: 57.19% directional classification accuracy.*</sub>
 
+## ⚙️ System Architecture Flow
 
 ```mermaid
 flowchart TD
     subgraph "☁️ GitHub Actions (Automation Layer)"
-        Cron_Fri["🕒 Viernes: Update Fixture"]
-        Cron_Wed["🕒 Miércoles: Re-Training"]
+        Cron_Fri["🕒 Friday: Update Fixture"]
+        Cron_Wed["🕒 Wednesday: Re-Training"]
         
-        Scraper["🕷️ scraper_fixtures.py<br/>(Nodriver / Request)"]
+        Scraper["🕷️ scraper_fixtures.py<br/>(Nodriver / Requests)"]
         Trainer["🧠 train_model.py<br/>(Scikit-Learn)"]
         
         Cron_Fri -->|Trigger| Scraper
@@ -71,7 +72,7 @@ flowchart TD
     end
 
     subgraph "📂 Data Persistence (Git)"
-        Raw[(Raw CSVs)]
+        Raw[(Raw CSVs / Parquet)]
         Model_PKL["📦 Model.pkl"]
         
         Scraper -->|Commit Data| Raw
@@ -100,5 +101,4 @@ flowchart TD
     style Trainer fill:#b2dfdb,stroke:#004d40,color:#000
     style API fill:#c5cae9,stroke:#1a237e,color:#000
     style Bot fill:#bbdefb,stroke:#0d47a1,color:#000
-    style User fill:#fff,stroke:#333,color:#000 
-    ```
+    style User fill:#fff,stroke:#333,color:#000
